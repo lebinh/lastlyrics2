@@ -1,7 +1,7 @@
 import os
 import time
 import functools
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 
 import lastfm
 import lyricswiki
@@ -19,6 +19,11 @@ def app_api(fn):
         resp.headers['Duration'] = duration
         return resp
     return wrapper
+
+
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 
 @app.route('/api/recenttracks/<user>')
