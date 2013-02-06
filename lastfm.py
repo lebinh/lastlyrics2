@@ -23,6 +23,7 @@ def parse_track(element):
 
 
 def get_recent_tracks(user, limit=1):
+    """ Get recently scrobbed tracks by given user """
     resp = last_query('user.getrecenttracks', user=user, limit=limit)
     if resp.status_code == 200:
         doc = pq(resp.content)
