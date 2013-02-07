@@ -1,7 +1,7 @@
 import os
 import time
 import functools
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, send_file
 
 import lastfm
 import lyricswiki
@@ -23,13 +23,13 @@ def app_api(fn):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return send_file('templates/index.html')
 
 
 @app.route('/api/recenttracks/<user>')
 @app_api
 def get_recent_tracks(user):
-    limit = request.args.get('limit', 1)
+    limit = request.args.get('limit', 1, type=int)
     return lastfm.get_recent_tracks(user, limit)
 
 
@@ -37,6 +37,16 @@ def get_recent_tracks(user):
 @app_api
 def get_lyrics(artist, song):
     return dict(lyrics=lyricswiki.get_lyrics(artist, song))
+
+
+@app.route('/api/lastlyrics/<user>')
+@app_api
+def get_last_lyrics(user):
+    limit = request.args.get('limit', 1, type=int)
+    tracks = lastfm.get_recent_tracks(user, limit)
+    for track in tracks:
+        track['lyrics'] = lyricswiki.get_lyrics(track['artist'], track['song'])
+    return tracks
 
 
 if __name__ == '__main__':

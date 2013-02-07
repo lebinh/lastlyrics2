@@ -23,6 +23,7 @@ def get_lyrics_content(e):
     if isinstance(e, lxml.html.HtmlElement):
         if e.tag == 'br':
             return u'\n'
+        return None
     if isinstance(e, lxml.etree._ElementStringResult):
         return unicode(e)
     if isinstance(e, lxml.etree._ElementUnicodeResult):

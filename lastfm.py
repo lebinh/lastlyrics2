@@ -15,7 +15,7 @@ def last_query(method=None, **kwargs):
 
 def extract_data(track):
     return {
-        'name': track['name'],
+        'song': track['name'],
         'artist': track['artist']['#text'],
         'time': track['date']['uts']
     }
@@ -32,4 +32,4 @@ def get_recent_tracks(user, limit=1):
                 return [extract_data(track) for track in tracks]
             else:
                 return [extract_data(tracks)]
-    return None
+    return []
